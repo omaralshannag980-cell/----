@@ -223,6 +223,8 @@ for i = 1, num2 do
 
     TextBox:GetPropertyChangedSignal("Text"):Connect(function()
         local text = TextBox.Text
+        local pdata = PlayersData[i]
+
         if #text >= 2 then
             local exactMatch = nil
             local partialMatch = nil
@@ -239,26 +241,53 @@ for i = 1, num2 do
                     end
                 end
             end
+
             local target = exactMatch or partialMatch
+
             if target then
+                if pdata.currentPlayer == target then
+                    TextBox.Text = target.Name
+                    return
+                end
+
+                if pdata.currentPlayer then
+                    if not AllPlayersStats[pdata.currentPlayer.UserId] then
+                        AllPlayersStats[pdata.currentPlayer.UserId] = {JoinCount = 0, LeaveCount = 0, Time = 0}
+                    end
+                    AllPlayersStats[pdata.currentPlayer.UserId].Time = pdata.Time
+                end
+
                 TextBox.Text = target.Name
-                PlayersData[i].currentPlayer = target
-                PlayersData[i].isTargeted = true
+                pdata.currentPlayer = target
+                pdata.isTargeted = true
                 Image.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. target.UserId .. "&width=150&height=150&format=png"
                 PlayerNameLabel.Text = string.sub(target.DisplayName, 1, 8)
-                PlayersData[i].Running = true
-                PlayersData[i].Time = AllPlayersStats[target.UserId] and AllPlayersStats[target.UserId].Time or 0
-                local stats = AllPlayersStats[target.UserId] or { JoinCount = 0, LeaveCount = 0, Time = 0 }
+                pdata.Running = true
+
+                if not AllPlayersStats[target.UserId] then
+                    AllPlayersStats[target.UserId] = {JoinCount = 0, LeaveCount = 0, Time = 0}
+                end
+                pdata.Time = AllPlayersStats[target.UserId].Time or 0
+
+                local stats = AllPlayersStats[target.UserId]
                 JoinLabel.Text = "دخول:" .. stats.JoinCount
                 LeaveLabel.Text = "خروج:" .. stats.LeaveCount
-                TimeLabel.Text = formatPlayerTime(stats.Time)
+                TimeLabel.Text = formatPlayerTime(pdata.Time)
             end
         elseif #text == 0 then
-            PlayersData[i].currentPlayer = nil
-            PlayersData[i].isTargeted = false
+            if pdata.currentPlayer then
+                if not AllPlayersStats[pdata.currentPlayer.UserId] then
+                    AllPlayersStats[pdata.currentPlayer.UserId] = {JoinCount = 0, LeaveCount = 0, Time = 0}
+                end
+                AllPlayersStats[pdata.currentPlayer.UserId].Time = pdata.Time
+            end
+
+            pdata.currentPlayer = nil
+            pdata.isTargeted = false
             Image.Image = ""
             PlayerNameLabel.Text = ""
-            PlayersData[i].Running = false
+            pdata.Running = false
+            pdata.Time = 0
             JoinLabel.Text = "دخول:0"
             LeaveLabel.Text = "خروج:0"
             TimeLabel.Text = "00:00:00"
@@ -289,6 +318,7 @@ Players.PlayerAdded:Connect(function(pl)
             pdata.JoinLabel.Text = "دخول:" .. AllPlayersStats[pl.UserId].JoinCount
             pdata.Running = true
             pdata.Time = AllPlayersStats[pl.UserId].Time
+            pdata.TimeLabel.Text = formatPlayerTime(pdata.Time)
             showNotification("🟢 دخل: " .. pl.DisplayName, Color3.fromRGB(0, 150, 0))
         end
     end
