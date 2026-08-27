@@ -1,6 +1,7 @@
 --[[
     🇦🇱 لانشر / lansher🇦🇱
     نسخة الجوال - واجهة عريضة
+    زر مفتوح أبعد لليسار
 ]]
 
 local Players = game:GetService("Players")
@@ -115,10 +116,10 @@ local TitleCorner = Instance.new("UICorner")
 TitleCorner.CornerRadius = UDim.new(0, 12)
 TitleCorner.Parent = Title
 
--- زر فتح القائمة
+-- زر فتح القائمة (أبعد لليسار)
 local ToggleButton = Instance.new("TextButton")
 ToggleButton.Size = UDim2.new(0, 180, 0, 45)
-ToggleButton.Position = UDim2.new(1, -190, 0, 10)
+ToggleButton.Position = UDim2.new(1, -260, 0, 10)  -- تم تغيير الإزاحة إلى -260
 ToggleButton.BackgroundColor3 = Color3.fromRGB(15, 0, 0)
 ToggleButton.Text = "🇦🇱 لانشر / lansher🇦🇱"
 ToggleButton.TextColor3 = Color3.new(1, 1, 1)
@@ -137,7 +138,7 @@ local num = 55
 local spacing = 5
 local num2 = 40
 
--- قائمة التمرير (عرض أكبر وارتفاع أقل)
+-- قائمة التمرير
 local ScrollFrame = Instance.new("ScrollingFrame")
 ScrollFrame.Size = UDim2.new(0.95, 0, 0, 250)
 ScrollFrame.Position = UDim2.new(0.025, 0, 0, 50)
