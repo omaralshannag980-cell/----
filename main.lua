@@ -2,6 +2,7 @@
     🇦🇱 لانشر / lansher🇦🇱
     نسخة الجوال - واجهة عريضة
     زر مفتوح أبعد لليسار
+    عداد الوقت مزاح لليسار
 ]]
 
 local Players = game:GetService("Players")
@@ -251,9 +252,10 @@ for i = 1, num2 do
     LeaveLabel.TextXAlignment = Enum.TextXAlignment.Left
     LeaveLabel.Parent = StatsContainer
 
+    -- عداد الوقت (تم تزيحته لليسار)
     local TimeLabel = Instance.new("TextLabel")
-    TimeLabel.Size = UDim2.new(0.75, 0, 1, 0)
-    TimeLabel.Position = UDim2.new(0.25, 0, 0, 0)
+    TimeLabel.Size = UDim2.new(0.60, 0, 1, 0)      -- كان 0.75
+    TimeLabel.Position = UDim2.new(0.15, 0, 0, 0)  -- كان 0.25
     TimeLabel.BackgroundTransparency = 1
     TimeLabel.Font = Enum.Font.GothamBold
     TimeLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
