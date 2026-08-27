@@ -1,6 +1,6 @@
 --[[
     🇦🇱 لانشر / lansher🇦🇱
-    نسخة الجوال فقط
+    نسخة الجوال - واجهة عريضة
 ]]
 
 local Players = game:GetService("Players")
@@ -9,12 +9,10 @@ local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
--- تحقق أنه جهاز جوال فقط
 if not UserInputService.TouchEnabled then
     return
 end
 
--- GUI
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "🇦🇱 لانشر / lansher🇦🇱"
 ScreenGui.ResetOnSpawn = false
@@ -27,7 +25,6 @@ NotificationsGui.ResetOnSpawn = false
 NotificationsGui.IgnoreGuiInset = true
 NotificationsGui.Parent = LocalPlayer.PlayerGui
 
--- دالة تنسيق الوقت
 local function formatPlayerTime(t)
     local h = math.floor(t / 3600)
     local m = math.floor((t % 3600) / 60)
@@ -35,7 +32,6 @@ local function formatPlayerTime(t)
     return string.format("%02d:%02d:%02d", h, m, s)
 end
 
--- دالة إشعار
 local function showNotification(message, color)
     local Notification = Instance.new("Frame")
     Notification.Size = UDim2.new(0, 260, 0, 70)
@@ -84,10 +80,10 @@ local function showNotification(message, color)
     end)
 end
 
--- الإطار الرئيسي
+-- الإطار الرئيسي (عريض وقصير)
 local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 390, 0, 380)
-MainFrame.Position = UDim2.new(0.5, -195, 0.5, -190)
+MainFrame.Size = UDim2.new(0, 500, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -250, 0.5, -150)
 MainFrame.BackgroundColor3 = Color3.fromRGB(10, 0, 0)
 MainFrame.Visible = false
 MainFrame.Active = true
@@ -119,7 +115,7 @@ local TitleCorner = Instance.new("UICorner")
 TitleCorner.CornerRadius = UDim.new(0, 12)
 TitleCorner.Parent = Title
 
--- زر فتح القائمة (ظاهر للجوال)
+-- زر فتح القائمة
 local ToggleButton = Instance.new("TextButton")
 ToggleButton.Size = UDim2.new(0, 180, 0, 45)
 ToggleButton.Position = UDim2.new(1, -190, 0, 10)
@@ -141,9 +137,9 @@ local num = 55
 local spacing = 5
 local num2 = 40
 
--- قائمة التمرير
+-- قائمة التمرير (عرض أكبر وارتفاع أقل)
 local ScrollFrame = Instance.new("ScrollingFrame")
-ScrollFrame.Size = UDim2.new(0.95, 0, 0, 330)
+ScrollFrame.Size = UDim2.new(0.95, 0, 0, 250)
 ScrollFrame.Position = UDim2.new(0.025, 0, 0, 50)
 ScrollFrame.BackgroundColor3 = Color3.fromRGB(5, 0, 0)
 ScrollFrame.ScrollBarThickness = 8
@@ -323,7 +319,6 @@ for i = 1, num2 do
     end)
 end
 
--- تحديث الوقت
 RunService.Heartbeat:Connect(function(deltaTime)
     for i = 1, num2 do
         local data = PlayersData[i]
@@ -334,7 +329,6 @@ RunService.Heartbeat:Connect(function(deltaTime)
     end
 end)
 
--- دخول لاعب
 Players.PlayerAdded:Connect(function(pl)
     if pl == LocalPlayer then return end
     if not AllPlayersStats[pl.UserId] then
@@ -353,7 +347,6 @@ Players.PlayerAdded:Connect(function(pl)
     end
 end)
 
--- خروج لاعب
 Players.PlayerRemoving:Connect(function(pl)
     if pl == LocalPlayer then return end
     if not AllPlayersStats[pl.UserId] then
@@ -372,13 +365,12 @@ Players.PlayerRemoving:Connect(function(pl)
     end
 end)
 
--- فتح/غلق القائمة
 local function toggleFrame()
     if MainFrame.Visible == false then
         MainFrame.Visible = true
         MainFrame.Size = UDim2.new(0, 0, 0, 0)
         local tween = TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-            Size = UDim2.new(0, 390, 0, 380)
+            Size = UDim2.new(0, 500, 0, 300)
         })
         tween:Play()
     else
@@ -388,7 +380,7 @@ local function toggleFrame()
         tween:Play()
         tween.Completed:Connect(function()
             MainFrame.Visible = false
-            MainFrame.Size = UDim2.new(0, 390, 0, 380)
+            MainFrame.Size = UDim2.new(0, 500, 0, 300)
         end)
     end
 end
@@ -396,4 +388,4 @@ end
 ToggleButton.MouseButton1Click:Connect(toggleFrame)
 
 showNotification("✅ تم تشغيل لانشر على الجوال", Color3.fromRGB(0, 200, 0))
-print("🇦🇱 لانشر / lansher🇦🇱 - نسخة الجوال")
+print("🇦🇱 لانشر / lansher🇦🇱 - نسخة الجوال العريضة")
